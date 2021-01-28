@@ -9,7 +9,7 @@ class cardPage extends StatelessWidget {
       ),
       body: ListView(
         padding: EdgeInsets.all(10.0),
-        children: [_cardTipo1()],
+        children: [_cardTipo1(), SizedBox(height: 30), _cardTipo2()],
       ),
     );
   }
@@ -40,6 +40,24 @@ class cardPage extends StatelessWidget {
               ),
             ],
           )
+        ],
+      ),
+    );
+  }
+
+  _cardTipo2() {
+    return Card(
+      child: Column(
+        children: [
+          FadeInImage(
+            placeholder: AssetImage('assets/tenor.gif'),
+            image: NetworkImage(
+                'https://cdn.pixabay.com/photo/2019/12/20/23/07/landscape-4709500_960_720.jpg'),
+            fadeInDuration: Duration(milliseconds: 1),
+          ),
+/*           Image(image: NetworkImage('https://via.placeholder.com/2120x1414')),*/
+          Container(
+              padding: EdgeInsets.all(10), child: Text('Algun placeholder'))
         ],
       ),
     );
