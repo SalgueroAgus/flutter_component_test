@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:component_test/src/utils/icono_string_util.dart';
 import 'package:component_test/src/providers/menu_provider.dart';
 
-import 'package:component_test/src/pages/alert_page.dart';
-
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
