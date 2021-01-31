@@ -8,7 +8,20 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-  String _nombre;
+  String _nombre = '';
+  String _email = '';
+  String _fecha = '';
+  String _optSelecctionada = 'volar';
+
+  List<String> _poderes = [
+    'volar',
+    'rayos x',
+    'superfuerza',
+    'invisibilidad',
+    'nada'
+  ];
+
+  TextEditingController _inputFieldDateController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +34,16 @@ class _InputPageState extends State<InputPage> {
         children: [
           _crearInput(),
           Divider(),
+          _crearEmail(),
+          Divider(),
+          _crearPassword(),
+          Divider(),
+          _crearFecha(context),
+          Divider(),
+          _crearDropdown(),
+          Divider(),
           _crearPersona(),
+          Divider(),
         ],
       ),
     );
@@ -52,6 +74,114 @@ class _InputPageState extends State<InputPage> {
   Widget _crearPersona() {
     return ListTile(
       title: Text('Nombre es: $_nombre'),
+      subtitle: Text('Email: $_email'),
+      trailing: Text(_optSelecctionada),
     );
+  }
+
+  Widget _crearEmail() {
+    return TextField(
+      keyboardType: TextInputType.emailAddress,
+      decoration: InputDecoration(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          hintText: 'Ingresa tu Correo ',
+          labelText: 'Email',
+          helperText: 'Correo electronico',
+          suffixIcon: Icon(Icons.alternate_email),
+          icon: Icon(Icons.email)),
+      onChanged: (value) {
+        setState(() {
+          _email = value;
+        });
+      },
+    );
+  }
+
+  _crearPassword() {
+    return TextField(
+      obscureText: true,
+      decoration: InputDecoration(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          hintText: 'Ingresa tu contraseña ',
+          labelText: 'Password',
+          helperText: 'Contraseña',
+          suffixIcon: Icon(Icons.lock_open),
+          icon: Icon(Icons.lock)),
+      onChanged: (value) {
+        setState(() {
+          _email = value;
+        });
+      },
+    );
+  }
+
+  _crearFecha(BuildContext context) {
+    return TextField(
+      enableInteractiveSelection: false,
+      controller: _inputFieldDateController,
+      decoration: InputDecoration(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          hintText: 'Fecha de nacimiento ',
+          labelText: 'Fecha de nacimiento',
+          suffixIcon: Icon(Icons.calendar_today),
+          icon: Icon(Icons.calendar_today_rounded)),
+      onTap: () {
+        FocusScope.of(context).requestFocus(new FocusNode());
+        _selectDate(context);
+      },
+    );
+  }
+
+  void _selectDate(BuildContext context) async {
+    DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: new DateTime.now(),
+      firstDate: new DateTime(2020),
+      lastDate: new DateTime(2025),
+    );
+
+    if (picked != null) {
+      setState(() {
+        _fecha = picked.toString();
+        _inputFieldDateController.text = _fecha;
+      });
+    }
+  }
+
+  List<DropdownMenuItem<String>> getOptDropDown() {
+    List<DropdownMenuItem<String>> lista = new List.empty(growable: true);
+
+    _poderes.forEach((poder) {
+      lista.add(DropdownMenuItem(
+        child: Text(poder),
+        value: poder,
+      ));
+    });
+
+    return lista;
+  }
+
+  _crearDropdown() {
+    return Row(children: [
+      Icon(Icons.select_all),
+      SizedBox(width: 30),
+      Expanded(
+        child: DropdownButton(
+          value: _optSelecctionada,
+          items: getOptDropDown(),
+          onChanged: (opt) {
+            setState(() {
+              _optSelecctionada = opt;
+            });
+          },
+        ),
+      )
+    ]);
   }
 }
